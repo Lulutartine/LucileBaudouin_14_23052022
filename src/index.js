@@ -1,29 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
-import { theme } from './utils/style/theme';
-import { GlobalStyle } from './utils/style/GlobalStyle';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider as StyleComponentThemeProvider } from 'styled-components';
-
-const ThemeProvider = ({ children, theme }) => {
-  return (
-    <StyleComponentThemeProvider theme={theme}>
-      <>
-        <GlobalStyle />
-        {children}
-      </>
-    </StyleComponentThemeProvider>
-  );
-};
+import './styles/sass/main.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
+    <Router>
+      <App />
+    </Router>
   </React.StrictMode>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );
