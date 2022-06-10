@@ -1,32 +1,27 @@
 import React, { useState } from 'react';
+import { PropTypes } from 'prop-types';
+// module NPM
 import DatePicker from 'react-date-picker';
+import { Modale } from 'modale-react-rm';
+import SelectOpt from './SelectOpt';
+// Init
 import { departements } from '../utils/labels/departementsList';
 import { statesUS } from '../utils/labels/statesUS';
-import { Modale } from 'modale-react-rm';
+import { initState } from '../utils/initState';
+// Component
 import SaveButton from './SaveButton';
-import SelectOpt from './SelectOpt';
 
 const Form = (props) => {
-  const setNewEmployee = props.setNewEmployee;
-  const emptyState = {
-    firstName: '',
-    lastName: '',
-    startDate: new Date(),
-    department: '',
-    dateOfBirth: new Date(),
-    street: '',
-    city: '',
-    state: '',
-    zipCode: '',
-  };
+  const addEmployee = props.setCurrentList;
 
   const [isOpen, setIsOpen] = useState(false);
-  const [state, setState] = useState(emptyState);
+  const [state, setState] = useState(initState);
 
   const setValue = (args) => {
     const name = args.target ? args.target.name : args.name;
     const value = args.target ? args.target.value : args.value;
     state[name] = value;
+    setState(state);
   };
 
   const saveEmployee = (e) => {
@@ -42,10 +37,7 @@ const Form = (props) => {
       state: state.state.label,
       zipCode: state.zipCode,
     };
-    document.getElementById('create-employee').reset();
-    setIsOpen(true);
-    setState(emptyState);
-    setNewEmployee(newState);
+    checkForm(newState);
   };
 
   const handleKeypress = (e) => {
@@ -54,10 +46,38 @@ const Form = (props) => {
     }
   };
 
+  const checkForm = (newState) => {
+    if (newState.firstName.length < 2) {
+      alert('Please entry a First Name (min 2 lettres)');
+    } else if (newState.lastName.length < 2) {
+      alert('Please entry a Last Name (min 2 lettres)');
+    } else if (newState.startDate == null) {
+      /* Have to check the error when I use the cross */
+      alert('Please choose a Start date');
+    } else if (newState.department == null) {
+      alert('Please select a Department');
+    } else if (newState.dateOfBirth == null) {
+      /* Have to check the error when I use the cross */
+      alert('Please choose a Date of birth');
+    } else if (newState.street.length < 2) {
+      alert('Please entry a Street (min 2 lettres)');
+    } else if (newState.city.length < 2) {
+      alert('Please entry a City (min 2 lettres)');
+    } else if (newState.state == null) {
+      alert('Please select a State');
+    } else if (newState.zipCode.length === 0) {
+      alert('Please entry a Zip code');
+    } else {
+      document.getElementById('create-employee').reset();
+      setIsOpen(true);
+      addEmployee(newState);
+    }
+  };
+
   const textModal = 'Employee created !!';
 
   return (
-    <form action="/" id="create-employee">
+    <form action="#" method="GET" id="create-employee">
       <fieldset className="informations left-part">
         <legend>Informations</legend>
         <div className="inputs">
@@ -67,6 +87,7 @@ const Form = (props) => {
             id="first-name"
             onChange={setValue}
             name="firstName"
+            required
           />
 
           <label htmlFor="last-name">Last Name</label>
@@ -75,6 +96,7 @@ const Form = (props) => {
             type="text"
             id="last-name"
             name="lastName"
+            required
           />
 
           <label htmlFor="date-of-birth">Date of Birth</label>
@@ -87,6 +109,8 @@ const Form = (props) => {
             className="datepicker"
             id="date-of-birth"
             name="dateOfBirth"
+            calendarAriaLabel="date of birth calendar icon"
+            clearAriaLabel="date of birth clear icon"
           />
 
           <label htmlFor="start-date">Start Date</label>
@@ -99,6 +123,8 @@ const Form = (props) => {
             className="datepicker"
             id="start-date"
             name="startDate"
+            calendarAriaLabel="starte date calendar icon"
+            clearAriaLabel="starte date clear icon"
           />
 
           <label htmlFor="department">Department</label>
@@ -116,10 +142,22 @@ const Form = (props) => {
         <legend>Address</legend>
         <div className="inputs">
           <label htmlFor="street">Street</label>
-          <input id="street" type="text" onChange={setValue} name="street" />
+          <input
+            id="street"
+            type="text"
+            onChange={setValue}
+            name="street"
+            required
+          />
 
           <label htmlFor="city">City</label>
-          <input id="city" type="text" onChange={setValue} name="city" />
+          <input
+            id="city"
+            type="text"
+            onChange={setValue}
+            name="city"
+            required
+          />
 
           <label htmlFor="stateChoice">State</label>
           <SelectOpt
@@ -134,8 +172,10 @@ const Form = (props) => {
             type="number"
             onChange={setValue}
             name="zipCode"
+            required
           />
         </div>
+
         <SaveButton saveEmployee={saveEmployee} onKeypresse={handleKeypress} />
       </fieldset>
       <Modale content={textModal} trigger={isOpen} setTrigger={setIsOpen} />
@@ -144,3 +184,7 @@ const Form = (props) => {
 };
 
 export default Form;
+
+Form.propTypes = {
+  setCurrentList: PropTypes.func.isRequired,
+};
