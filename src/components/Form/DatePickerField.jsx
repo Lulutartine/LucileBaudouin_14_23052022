@@ -62,7 +62,9 @@ export const DatePickerField = ({
         render={({ field, fieldState: { error } }) => (
           <>
             <Input
-              type="date"
+              aria-label={label}  
+              aria-required="true"
+              ype="date"
               className="input--date"
               onChange={e => {
                 field.onChange(e.target.value);

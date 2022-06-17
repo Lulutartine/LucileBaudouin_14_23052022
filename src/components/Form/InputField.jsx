@@ -57,6 +57,8 @@ export const InputField = ({
     <InputFieldContent>
       <Label>{label}</Label>
       <Input
+        aria-label={label}  
+        aria-required="true"
         type={type}
         placeholder={placeholder}
         {...register(input, {

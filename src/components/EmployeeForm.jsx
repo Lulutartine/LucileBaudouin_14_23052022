@@ -183,6 +183,8 @@ export const EmployeeForm = modalProps => {
         <SelectField
           label={'State'}
           input={'state'}
+          aria-label={'state'}  
+          aria-required="true"
           placeholder="Select state"
           control={control}
           errorMessage={'Please select state'}
@@ -206,6 +208,8 @@ export const EmployeeForm = modalProps => {
         <SelectField
           label={'Department'}
           input={'department'}
+          aria-label={'department'}  
+          aria-required="true"
           placeholder="Select department"
           control={control}
           errorMessage={'Please select department'}
